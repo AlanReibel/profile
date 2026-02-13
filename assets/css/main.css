@@ -1,0 +1,94 @@
+/* Fonts are loaded in nuxt.config.ts */
+
+:root {
+  /* Color Palette */
+  --bg-dark: #020420;
+  --bg-card: #0f172a;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent-primary: #00dc82;
+  --accent-secondary: #36e4da;
+  
+  /* Gradients */
+  --gradient-main: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  --gradient-text: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+  
+  /* Glassmorphism Variables */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  /* Z-Index Layers (Strictly Controlled) */
+  --z-negative: -1;  /* Background elements */
+  --z-base: 1;       /* Standard content */
+  --z-floating: 10;  /* Floating elements, sticky headers */
+  --z-overlay: 100;  /* Modals, heavy overlays */
+
+  /* Spacing & Layout */
+  --spacing-section: 6rem;
+  --max-width: 1200px;
+  --border-radius: 12px;
+
+  /* Typography */
+  --font-family: 'Outfit', sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  line-height: 1.2;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.3s ease;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Global Animations (Semantic usage via mixins or direct application, not utility classes) */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-primary);
+  border-radius: 4px;
+}

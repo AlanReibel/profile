@@ -1,0 +1,21 @@
+# AI Agent Rules
+
+Follow these style and architectural guidelines when generating code for this project:
+
+1.  **Native CSS Nesting**:
+    *   Use standard CSS nesting (e.g., `.parent { .child { ... } }`).
+    *   Do NOT use SASS, SCSS, or other preprocessors.
+    *   Do NOT use BEM if nesting provides restricted scope (Vue `scoped` styles handle this).
+
+2.  **Container Queries**:
+    *   Use `@container` queries for responsive design instead of `@media` (viewport) queries.
+    *   Always ensure the parent element has `container-type: inline-size` (or `size`) defined.
+
+3.  **No Utility Classes**:
+    *   Do NOT use utility classes (e.g., Tailwind, Bootstrap, or custom `flex-center`, `p-4`).
+    *   Use **semantic class names** that describe the component or content (e.g., `.user-profile`, `.navigation-list`).
+    *   Keep all styles strictly **scoped** within the Vue component (`<style scoped>`).
+
+4.  **CSS Variables & Layers**:
+    *   Use CSS variables for theme and layout values (defined in `assets/css/main.css`).
+    *   Use strict Z-Index layers defined in variables (e.g., `var(--z-floating)`).
