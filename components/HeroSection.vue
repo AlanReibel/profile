@@ -62,10 +62,46 @@ const techs = [
     name: 'Linux', color: '#fcc624',
     svg: '<rect x="2" y="3" width="20" height="18" rx="3" fill="currentColor" opacity=".1" stroke="currentColor" stroke-width="1.3"/><path d="M7 14l3-3-3-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 14h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'
   },
+  {
+    name: 'Astro', color: '#bc52ee',
+    svg: '<path d="M12 2l6 18c-2-2-4-3-6-3s-4 1-6 3z" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="12" cy="14" r="2" fill="currentColor"/>'
+  },
+  {
+    name: 'Next.js', color: '#e0e0e0',
+    svg: '<circle cx="12" cy="12" r="10" fill="currentColor" opacity=".1" stroke="currentColor" stroke-width="1.3"/><path d="M9 7v10M9 7l7 10V7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'
+  },
+  {
+    name: 'Three.js', color: '#e0e0e0',
+    svg: '<path d="M12 2l9 5v10l-9 5-9-5V7z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M12 12l9-5M12 12v10M12 12L3 7" fill="none" stroke="currentColor" stroke-width="1.2"/>'
+  },
+  {
+    name: 'Vite', color: '#a855f7',
+    svg: '<path d="M2 4l10 18L22 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3l-3 8h5l-4 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>'
+  },
+  {
+    name: 'npm', color: '#cb3837',
+    svg: '<rect x="1" y="5" width="22" height="14" rx="2" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.3"/><text x="12" y="16" text-anchor="middle" font-size="8" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">npm</text>'
+  },
+  {
+    name: 'Pinia', color: '#ffd859',
+    svg: '<ellipse cx="12" cy="14" rx="5.5" ry="7.5" fill="currentColor" opacity=".15" stroke="currentColor" stroke-width="1.3"/><path d="M9 4c1-3 5-3 6 0M10 2.5c.5-1.5 3.5-1.5 4 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>'
+  },
+  {
+    name: 'WordPress', color: '#21759b',
+    svg: '<circle cx="12" cy="12" r="10" fill="currentColor" opacity=".1" stroke="currentColor" stroke-width="1.3"/><text x="12" y="17" text-anchor="middle" font-size="14" font-weight="700" font-family="serif" fill="currentColor">W</text>'
+  },
+  {
+    name: 'Photoshop', color: '#31a8ff',
+    svg: '<rect x="2" y="2" width="20" height="20" rx="3" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.5"/><text x="12" y="16.5" text-anchor="middle" font-size="11" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">Ps</text>'
+  },
+  {
+    name: 'jQuery', color: '#0769ad',
+    svg: '<text x="12" y="16" text-anchor="middle" font-size="8" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">jQ</text><path d="M5 18c4 3 10 3 14-1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>'
+  },
 ];
 
 const N = techs.length;
-const RADIUS = 155;
+const RADIUS = 190;
 
 const state = reactive({
   tiltX: 0,
@@ -344,8 +380,8 @@ onUnmounted(() => {
 
       .planet-container {
         position: relative;
-        width: 400px;
-        height: 400px;
+        width: 460px;
+        height: 460px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -376,12 +412,12 @@ onUnmounted(() => {
 
       .orbit-wrapper {
         position: absolute;
-        width: 310px;
-        height: 310px;
+        width: 380px;
+        height: 380px;
         top: 50%;
         left: 50%;
-        margin-top: -155px;
-        margin-left: -155px;
+        margin-top: -190px;
+        margin-left: -190px;
         transform-style: preserve-3d;
         will-change: transform;
       }
@@ -408,10 +444,10 @@ onUnmounted(() => {
       }
 
       .orbit-icon {
-        width: 42px;
-        height: 42px;
-        margin: -21px 0 0 -21px;
-        border-radius: 10px;
+        width: 38px;
+        height: 38px;
+        margin: -19px 0 0 -19px;
+        border-radius: 9px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -426,8 +462,8 @@ onUnmounted(() => {
         user-select: none;
 
         .icon-svg {
-          width: 24px;
-          height: 24px;
+          width: 22px;
+          height: 22px;
         }
       }
     }
