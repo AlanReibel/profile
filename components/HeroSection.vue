@@ -123,7 +123,7 @@ function tick() {
   state.tiltX = lerp(state.tiltX, tgtTiltX, 0.06);
   state.tiltY = lerp(state.tiltY, tgtTiltY, 0.06);
   state.speed = lerp(state.speed, tgtSpeed, 0.04);
-  state.angle = (state.angle + 0.3 * state.speed) % 360;
+  state.angle = (state.angle + 0.12 * state.speed) % 360;
   raf = requestAnimationFrame(tick);
 }
 
@@ -144,16 +144,39 @@ function onLeave() {
   tgtSpeed = 1;
 }
 
-const wrapperStyle = computed(() => ({
-  transform: `rotateX(${65 + state.tiltX}deg) rotateY(${state.tiltY}deg) rotateZ(${state.angle}deg)`,
-}));
-
+// Depth-of-field: z-depth drives bokeh blur, dimming, and scale
 function getItemStyle(i) {
   const a = (360 / N) * i;
+  const rx = 65 + state.tiltX;
+  const ry = state.tiltY;
+  const rz = state.angle + a;
+  const zNorm = Math.sin(rz * Math.PI / 180); // -1 (back) to +1 (front)
+  const blur = zNorm < -0.1 ? Math.abs(zNorm + 0.1) * 4 : 0;
+  const dim = 0.3 + (zNorm + 1) * 0.35;
+  const scale = 0.82 + (zNorm + 1) * 0.14;
   return {
-    transform: `rotateZ(${a}deg) translateX(${RADIUS}px) rotateZ(${-a - state.angle}deg) rotateY(${-state.tiltY}deg) rotateX(${-(65 + state.tiltX)}deg)`,
+    transform: `rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) translateX(${RADIUS}px) rotateZ(${-rz}deg) rotateY(${-ry}deg) rotateX(${-rx}deg)`,
+    '--d-blur': `${blur.toFixed(1)}px`,
+    '--d-dim': dim.toFixed(2),
+    '--d-scale': scale.toFixed(2),
   };
 }
+
+// Rim light: rotating conic gradient synced to orbit
+const rimStyle = computed(() => ({
+  transform: `rotate(${-state.angle * 0.7}deg)`,
+}));
+
+// Atmospheric particles
+const particles = Array.from({ length: 25 }, (_, i) => ({
+  id: i,
+  x: Math.random() * 100,
+  y: Math.random() * 100,
+  size: 1 + Math.random() * 2.5,
+  dur: 4 + Math.random() * 6,
+  delay: Math.random() * 6,
+  opacity: 0.15 + Math.random() * 0.35,
+}));
 
 onMounted(() => {
   raf = requestAnimationFrame(tick);
@@ -176,56 +199,33 @@ onUnmounted(() => {
         <div class="contact">
           <p class="location"><span>📍</span> {{ personalInfo.location }}</p>
           <div class="actions">
-            <a :href="'mailto:' + personalInfo.email" class="button primary"
-              >Contact Me</a
-            >
-            <a
-              :href="personalInfo.github"
-              target="_blank"
-              class="button outline"
-              rel="noopener"
-              >GitHub</a
-            >
-            <a
-              :href="personalInfo.linkedin"
-              target="_blank"
-              class="button outline"
-              rel="noopener"
-              >LinkedIn</a
-            >
+            <a :href="'mailto:' + personalInfo.email" class="button primary">Contact Me</a>
+            <a :href="personalInfo.github" target="_blank" class="button outline" rel="noopener">GitHub</a>
+            <a :href="personalInfo.linkedin" target="_blank" class="button outline" rel="noopener">LinkedIn</a>
           </div>
         </div>
       </div>
 
       <div class="visual" v-animate-on-scroll>
-        <div
-          class="planet-container"
-          ref="containerRef"
-          @mousemove="onMove"
-          @mouseleave="onLeave"
-        >
-          <!-- Profile image -->
-          <div class="planet">
-            <img
-              src="~/assets/css/img/Alan_Reibel_Profile.png"
-              alt="Alan Reibel"
-            />
+        <div class="planet-container" ref="containerRef" @mousemove="onMove" @mouseleave="onLeave">
+          <!-- Atmospheric particles -->
+          <div class="particles">
+            <div v-for="p in particles" :key="p.id" class="particle"
+              :style="{ left: p.x + '%', top: p.y + '%', width: p.size + 'px', height: p.size + 'px', animationDuration: p.dur + 's', animationDelay: p.delay + 's', opacity: p.opacity }">
+            </div>
           </div>
 
-          <!-- 3D Orbit ring -->
-          <div class="orbit-wrapper" :style="wrapperStyle">
-            <div class="orbit-track"></div>
-            <div
-              v-for="(tech, i) in techs"
-              :key="tech.name"
-              class="orbit-item"
-              :style="getItemStyle(i)"
-              :title="tech.name"
-            >
-              <div class="orbit-icon" :style="{ '--c': tech.color }">
-                <svg viewBox="0 0 24 24" class="icon-svg" v-html="tech.svg"></svg>
-              </div>
-            </div>
+          <!-- Profile image with rim light -->
+          <div class="planet">
+            <div class="rim-light" :style="rimStyle"></div>
+            <img src="~/assets/css/img/Alan_Reibel_Profile.png" alt="Alan Reibel" />
+          </div>
+
+          <!-- 3D Orbit items (siblings of planet for z-sorting) -->
+          <div v-for="(tech, i) in techs" :key="tech.name" class="orbit-item" :style="getItemStyle(i)"
+            :title="tech.name">
+            <span>{{ tech.name }}</span>
+            <svg viewBox="0 0 24 24" class="icon" v-html="tech.svg"></svg>
           </div>
         </div>
       </div>
@@ -250,11 +250,9 @@ onUnmounted(() => {
     right: -10%;
     width: 600px;
     height: 600px;
-    background: radial-gradient(
-      circle,
-      rgba(0, 220, 130, 0.15) 0%,
-      rgba(0, 0, 0, 0) 70%
-    );
+    background: radial-gradient(circle,
+        rgba(0, 220, 130, 0.15) 0%,
+        rgba(0, 0, 0, 0) 70%);
     z-index: var(--z-negative);
     filter: blur(80px);
   }
@@ -386,53 +384,50 @@ onUnmounted(() => {
         align-items: center;
         justify-content: center;
         perspective: 800px;
+        transform-style: preserve-3d;
         margin: 0 auto;
       }
 
+      /* --- Profile image with rim light & bottom fade --- */
       .planet {
         position: relative;
-        width: 180px;
-        height: 180px;
-        border-radius: 50%;
+        width: 200px;
+        height: 290px;
         overflow: hidden;
-        z-index: 2;
-        box-shadow:
-          0 0 30px rgba(0, 220, 130, 0.3),
-          0 0 60px rgba(0, 220, 130, 0.12),
-          0 0 100px rgba(0, 220, 130, 0.06);
-        border: 2px solid rgba(0, 220, 130, 0.3);
+        transform: translateZ(0px);
+        mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
 
         img {
           width: 100%;
           height: 100%;
           object-fit: cover;
           display: block;
+          position: relative;
+          z-index: 1;
+        }
+
+        .rim-light {
+          position: absolute;
+          inset: -12px;
+          border-radius: 4px;
+          background: conic-gradient(from 0deg,
+              transparent 0%,
+              rgba(54, 228, 218, 0.35) 12%,
+              transparent 25%,
+              rgba(0, 220, 130, 0.25) 40%,
+              transparent 55%,
+              rgba(97, 218, 251, 0.3) 70%,
+              transparent 85%,
+              rgba(167, 85, 247, 0.2) 95%,
+              transparent 100%);
+          filter: blur(10px);
+          z-index: 0;
+          will-change: transform;
         }
       }
 
-      .orbit-wrapper {
-        position: absolute;
-        width: 380px;
-        height: 380px;
-        top: 50%;
-        left: 50%;
-        margin-top: -190px;
-        margin-left: -190px;
-        transform-style: preserve-3d;
-        will-change: transform;
-      }
-
-      .orbit-track {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        border: 1px solid rgba(0, 220, 130, 0.12);
-        box-shadow:
-          0 0 20px rgba(0, 220, 130, 0.04),
-          inset 0 0 20px rgba(0, 220, 130, 0.04);
-      }
-
+      /* --- Orbit items --- */
       .orbit-item {
         position: absolute;
         top: 50%;
@@ -443,27 +438,57 @@ onUnmounted(() => {
         will-change: transform;
       }
 
-      .orbit-icon {
-        width: 38px;
-        height: 38px;
-        margin: -19px 0 0 -19px;
-        border-radius: 9px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--c);
-        background: rgba(2, 4, 32, 0.88);
-        border: 1.5px solid var(--c);
-        box-shadow:
-          0 0 14px color-mix(in srgb, var(--c) 30%, transparent),
-          inset 0 0 10px color-mix(in srgb, var(--c) 8%, transparent);
-        backdrop-filter: blur(6px);
-        transition: box-shadow 0.3s ease;
-        user-select: none;
+      /* Depth-of-field: bokeh blur & dimming on children */
+      .orbit-item svg,
+      .orbit-item span {
+        filter: blur(var(--d-blur, 0px));
+        opacity: var(--d-dim, 1);
+        transform: scale(var(--d-scale, 1));
+        transition: filter 0.15s ease, opacity 0.15s ease;
+      }
 
-        .icon-svg {
-          width: 22px;
-          height: 22px;
+      svg {
+        width: 2rem;
+        height: 2rem;
+      }
+
+      span {
+        font-size: .75rem;
+      }
+
+      /* --- Atmospheric floating particles --- */
+      .particles {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .particle {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(54, 228, 218, 0.8), rgba(0, 220, 130, 0.3));
+        animation: float-up linear infinite;
+        will-change: transform, opacity;
+      }
+
+      @keyframes float-up {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 0;
+        }
+
+        15% {
+          opacity: var(--particle-opacity, 0.3);
+        }
+
+        85% {
+          opacity: var(--particle-opacity, 0.3);
+        }
+
+        100% {
+          transform: translateY(-80px) scale(0.3);
+          opacity: 0;
         }
       }
     }
@@ -479,13 +504,16 @@ onUnmounted(() => {
         .name {
           font-size: 3.5rem;
         }
+
         .description {
           margin: 0 auto 2.5rem;
         }
+
         .contact {
           .location {
             justify-content: center;
           }
+
           .actions {
             justify-content: center;
           }
