@@ -218,7 +218,7 @@ onUnmounted(() => {
           <!-- Profile image with rim light -->
           <div class="planet">
             <div class="rim-light" :style="rimStyle"></div>
-            <img src="~/assets/css/img/Alan_Reibel_Profile.png" alt="Alan Reibel" />
+            <img src="~/assets/css/img/Alan_Reibel_Profile.png" alt="Alan Reibel Perez - Fullstack Web Developer Profile" />
           </div>
 
           <!-- 3D Orbit items (siblings of planet for z-sorting) -->

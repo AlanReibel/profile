@@ -1,0 +1,46 @@
+# Alan Reibel Perez - Fullstack Web Developer
+
+Fullstack Web Developer with 12 years of experience, specialized in Vue3, Nuxt3, and Laravel. Based in Barcelona, Spain.
+
+## Summary
+Fullstack Developer specialized in Vue3, Nuxt3, and Laravel. 12 years building high-performance, user-centric web applications with measurable business impact.
+
+## Experience
+
+### Tech Lead & CoFounder - HALL EDUCATIONAL TOOLS (2021 - 2025)
+- Built educational management platform as Tech Lead.
+- Tech Stack: Vue, Nuxt, Laravel, TypeScript, Pinia.
+
+### Tech Lead Fullstack - WILD BRANDERS (2023 - 2024)
+- Led technical direction of 24segons.es.
+- Tech Stack: Vue, React, Next, PHP, Prestashop, Three.js.
+
+### Fullstack Developer - NOVACASA EDITORIAL (2022)
+- Specialized in Prestashop and performance optimization.
+
+### Fullstack Developer - COMMO IDEAS (2020 - 2021)
+- PHP, SEO, and Web Performance.
+
+### LAMP DevOps - Fullstack - ETACTICA PROYECTOS DIGITALES (2019)
+- Server optimization, Google Cloud, Mautic integration.
+
+### Fullstack - Marketing - Web Design - FUJIFILM EUROPE (2018 - 2019)
+- FreeMarker, JavaScript, SEO, and performance evaluations.
+
+## Skills
+- **Frontend**: Vue.js, Nuxt.js, React, Next.js, TypeScript, Three.js, CSS3, HTML5.
+- **Backend**: Laravel, PHP, Node.js, SQL, REST APIs.
+- **AI**: Claude Code, Windsurf, Agents, MCP integrations.
+- **Tools**: Docker, Git, Linux, Figma.
+
+## Projects
+- 24 Segons
+- Anfora Global
+- Suma Capital
+- Fujifilm Shop
+- BCN3D Technologies
+
+## Contact
+- **Email**: reibeltel@gmail.com
+- **GitHub**: https://github.com/AlanReibel
+- **LinkedIn**: https://linkedin.com/in/alan-reibel/

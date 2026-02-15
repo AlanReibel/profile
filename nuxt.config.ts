@@ -9,6 +9,9 @@ export default defineNuxtConfig({
   app: {
     baseURL: "/profile/",
     head: {
+      htmlAttrs: {
+        lang: "en",
+      },
       title: "Alan Reibel Perez - Fullstack Web Developer",
       meta: [
         { charset: "utf-8" },
@@ -16,11 +19,26 @@ export default defineNuxtConfig({
         {
           name: "description",
           content:
-            "Fullstack Web Developer with 11 years of experience, specialized in Vanilla JS & CSS, Vue3, Nuxt3, Pinia and Laravel.",
+            "Fullstack Web Developer with 12 years of experience, specialized in Vue3, Nuxt3, and Laravel. Expert in high-performance web applications.",
         },
         { name: "format-detection", content: "telephone=no" },
+        // SEO Keywords
+        { name: "keywords", content: "Fullstack Developer, Vue3, Nuxt3, Laravel, Web Performance, Frontend Developer, Backend Developer, Barcelona, Alan Reibel" },
+        // Open Graph / Facebook
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: "https://alanreibel.github.io/profile/" },
+        { property: "og:title", content: "Alan Reibel Perez - Fullstack Web Developer" },
+        { property: "og:description", content: "Fullstack Web Developer with 12 years of experience, specialized in Vue3, Nuxt3, and Laravel." },
+        { property: "og:image", content: "https://alanreibel.github.io/profile/og-image.png" },
+        // Twitter
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:url", content: "https://alanreibel.github.io/profile/" },
+        { name: "twitter:title", content: "Alan Reibel Perez - Fullstack Web Developer" },
+        { name: "twitter:description", content: "Fullstack Web Developer with 12 years of experience, specialized in Vue3, Nuxt3, and Laravel." },
+        { name: "twitter:image", content: "https://alanreibel.github.io/profile/og-image.png" },
       ],
       link: [
+        { rel: "canonical", href: "https://alanreibel.github.io/profile/" },
         { rel: "icon", type: "image/x-icon", href: "/profile/favicon.ico" },
         {
           rel: "stylesheet",
