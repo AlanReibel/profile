@@ -1,108 +1,12 @@
 <script setup>
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
-
-const { personalInfo } = useCvData();
-
 const containerRef = ref(null);
 
-const techs = [
-  {
-    name: 'Vue.js', color: '#42b883',
-    svg: '<path d="M2 3h3l7 12L19 3h3L12 21z" fill="currentColor" opacity=".3"/><path d="M8 3l4 7 4-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>'
-  },
-  {
-    name: 'Nuxt', color: '#00dc82',
-    svg: '<path d="M1 20L9 4l8 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 20l4-8 4 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>'
-  },
-  {
-    name: 'JavaScript', color: '#f7df1e',
-    svg: '<rect x="2" y="2" width="20" height="20" rx="3" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.5"/><text x="12" y="16.5" text-anchor="middle" font-size="11" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">JS</text>'
-  },
-  {
-    name: 'TypeScript', color: '#3178c6',
-    svg: '<rect x="2" y="2" width="20" height="20" rx="3" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.5"/><text x="12" y="16.5" text-anchor="middle" font-size="11" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">TS</text>'
-  },
-  {
-    name: 'HTML5', color: '#e34f26',
-    svg: '<path d="M4 2l1.5 17L12 22l6.5-3L20 2z" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><text x="12" y="15" text-anchor="middle" font-size="9" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">5</text>'
-  },
-  {
-    name: 'CSS3', color: '#264de4',
-    svg: '<path d="M4 2l1.5 17L12 22l6.5-3L20 2z" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><text x="12" y="15" text-anchor="middle" font-size="9" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">3</text>'
-  },
-  {
-    name: 'React', color: '#61dafb',
-    svg: '<ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" stroke-width="1.2"/><ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" stroke-width="1.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" stroke-width="1.2" transform="rotate(-60 12 12)"/><circle cx="12" cy="12" r="2" fill="currentColor"/>'
-  },
-  {
-    name: 'PHP', color: '#777bb4',
-    svg: '<ellipse cx="12" cy="12" rx="11" ry="7" fill="currentColor" opacity=".1" stroke="currentColor" stroke-width="1.3"/><text x="12" y="15" text-anchor="middle" font-size="7.5" font-weight="800" font-family="Arial,sans-serif" fill="currentColor">php</text>'
-  },
-  {
-    name: 'Laravel', color: '#ff2d20',
-    svg: '<path d="M7 4l3 5-2 2 3 4 5-6 2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 11v6c0 2 2 3 4 3h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'
-  },
-  {
-    name: 'Node.js', color: '#339933',
-    svg: '<path d="M12 2l9 5v10l-9 5-9-5V7z" fill="currentColor" opacity=".1" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><text x="12" y="16" text-anchor="middle" font-size="10" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">N</text>'
-  },
-  {
-    name: 'Docker', color: '#2496ed',
-    svg: '<path d="M21 11c1.5 0 2.5 1.5 2 3.5-1 3.5-5 6.5-11 6.5S1 18 1 14.5c0-2 1-3.5 3-3.5h17z" fill="currentColor" opacity=".1" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M7 11V8m3 3V8m3 3V8m-3-3V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>'
-  },
-  {
-    name: 'Git', color: '#f05032',
-    svg: '<circle cx="6" cy="5" r="2.5" fill="currentColor" opacity=".3" stroke="currentColor" stroke-width="1.2"/><circle cx="18" cy="5" r="2.5" fill="currentColor" opacity=".3" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="19" r="2.5" fill="currentColor" opacity=".3" stroke="currentColor" stroke-width="1.2"/><path d="M6 7.5v3c0 3 2 5 6 6m6-9v3c0 3-2 5-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/>'
-  },
-  {
-    name: 'Figma', color: '#a259ff',
-    svg: '<rect x="5" y="1" width="7" height="7" rx="3.5" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1.2"/><rect x="12" y="1" width="7" height="7" rx="3.5" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1.2"/><rect x="5" y="8" width="7" height="7" rx="3.5" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1.2"/><circle cx="15.5" cy="11.5" r="3.5" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1.2"/><rect x="5" y="15" width="7" height="7" rx="3.5" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1.2"/>'
-  },
-  {
-    name: 'Linux', color: '#fcc624',
-    svg: '<rect x="2" y="3" width="20" height="18" rx="3" fill="currentColor" opacity=".1" stroke="currentColor" stroke-width="1.3"/><path d="M7 14l3-3-3-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 14h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'
-  },
-  {
-    name: 'Astro', color: '#bc52ee',
-    svg: '<path d="M12 2l6 18c-2-2-4-3-6-3s-4 1-6 3z" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="12" cy="14" r="2" fill="currentColor"/>'
-  },
-  {
-    name: 'Next.js', color: '#e0e0e0',
-    svg: '<circle cx="12" cy="12" r="10" fill="currentColor" opacity=".1" stroke="currentColor" stroke-width="1.3"/><path d="M9 7v10M9 7l7 10V7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'
-  },
-  {
-    name: 'Three.js', color: '#e0e0e0',
-    svg: '<path d="M12 2l9 5v10l-9 5-9-5V7z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M12 12l9-5M12 12v10M12 12L3 7" fill="none" stroke="currentColor" stroke-width="1.2"/>'
-  },
-  {
-    name: 'Vite', color: '#a855f7',
-    svg: '<path d="M2 4l10 18L22 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3l-3 8h5l-4 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>'
-  },
-  {
-    name: 'npm', color: '#cb3837',
-    svg: '<rect x="1" y="5" width="22" height="14" rx="2" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.3"/><text x="12" y="16" text-anchor="middle" font-size="8" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">npm</text>'
-  },
-  {
-    name: 'Pinia', color: '#ffd859',
-    svg: '<ellipse cx="12" cy="14" rx="5.5" ry="7.5" fill="currentColor" opacity=".15" stroke="currentColor" stroke-width="1.3"/><path d="M9 4c1-3 5-3 6 0M10 2.5c.5-1.5 3.5-1.5 4 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>'
-  },
-  {
-    name: 'WordPress', color: '#21759b',
-    svg: '<circle cx="12" cy="12" r="10" fill="currentColor" opacity=".1" stroke="currentColor" stroke-width="1.3"/><text x="12" y="17" text-anchor="middle" font-size="14" font-weight="700" font-family="serif" fill="currentColor">W</text>'
-  },
-  {
-    name: 'Photoshop', color: '#31a8ff',
-    svg: '<rect x="2" y="2" width="20" height="20" rx="3" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.5"/><text x="12" y="16.5" text-anchor="middle" font-size="11" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">Ps</text>'
-  },
-  {
-    name: 'jQuery', color: '#0769ad',
-    svg: '<text x="12" y="16" text-anchor="middle" font-size="8" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">jQ</text><path d="M5 18c4 3 10 3 14-1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>'
-  },
-];
-
-const N = techs.length;
+const { personalInfo, techIcons } = useCvData();
+const N = techIcons.length;
 const isMobile = ref(false);
-const RADIUS = computed(() => (isMobile.value ? 140 : 190));
+const windowSize = ref(window.innerWidth);
+const RADIUS = computed(() => (isMobile.value ? windowSize.value * 0.45 : 230));
 
 const state = reactive({
   tiltX: 0,
@@ -231,7 +135,7 @@ onUnmounted(() => {
           </div>
 
           <!-- 3D Orbit items (siblings of planet for z-sorting) -->
-          <div v-for="(tech, i) in techs" :key="tech.name" class="orbit-item" :style="getItemStyle(i)"
+          <div v-for="(tech, i) in techIcons" :key="tech.name" class="orbit-item" :style="getItemStyle(i)"
             :title="tech.name">
             <span>{{ tech.name }}</span>
             <svg viewBox="0 0 24 24" class="icon" v-html="tech.svg"></svg>
@@ -248,7 +152,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
   padding-top: 80px;
   container-type: inline-size;
 
@@ -333,14 +237,7 @@ onUnmounted(() => {
       gap: 0.5rem;
     }
 
-    .actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
 
-
-
-    }
 
     .button {
       padding: 0.8rem 2rem;
@@ -350,6 +247,7 @@ onUnmounted(() => {
         transform 0.2s ease,
         box-shadow 0.2s ease;
       font-size: 1rem;
+      text-align: center;
 
       &:active {
         transform: scale(0.98);
@@ -398,8 +296,7 @@ onUnmounted(() => {
 
     .planet-container {
       position: relative;
-      width: 460px;
-      height: 460px;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -414,7 +311,7 @@ onUnmounted(() => {
       width: 200px;
       height: 290px;
       overflow: hidden;
-      transform: translateX(10%);
+      /* transform: translateX(10%); */
       mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
       -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
 
@@ -452,10 +349,15 @@ onUnmounted(() => {
     /* --- Orbit items --- */
     .orbit-item {
       position: absolute;
-      top: 50%;
+      /* top: 50%;
       left: 50%;
       width: 0;
-      height: 0;
+      height: 0; */
+      transform-style: preserve-3d;
+      will-change: transform;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       transform-style: preserve-3d;
       will-change: transform;
     }
@@ -497,6 +399,12 @@ onUnmounted(() => {
 
   }
 
+  .actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
 
   @keyframes float-up {
     0% {
@@ -533,22 +441,19 @@ onUnmounted(() => {
         margin: 0 auto 2.5rem;
       }
 
-      .contact {
-        .location {
-          justify-content: center;
-        }
+    }
 
-        .actions {
-          justify-content: center;
-        }
-      }
+    .location {
+      justify-content: center;
+    }
+
+    .actions {
+      justify-content: center;
     }
 
     .visual {
       order: -1;
       margin-bottom: 2rem;
-
-
     }
 
     .planet-container {
@@ -561,9 +466,19 @@ onUnmounted(() => {
       height: 200px;
     }
 
-    .orbit-item svg {
-      width: 1.5rem;
-      height: 1.5rem;
+    .orbit-item {
+      svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      span {
+        font-size: .65rem;
+      }
+    }
+
+    .primary {
+      width: 100%;
     }
   }
 }
